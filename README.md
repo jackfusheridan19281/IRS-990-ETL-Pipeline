@@ -81,7 +81,7 @@ If you download a 2026 ZIP file from the IRS, you’ll need to add a block that 
 
 Lastly two more things.
 
-First, as of right now it is currently May 10th, 2025. Meaning that there will be more 2025 downloads available eventually. Please be mindful for these new
+First, as of right now it is currently May 10th, 2025. Meaning that there will be more 2025 downloads available eventually. Please be mindful of these new
 zip files. The logic still applies, download the zip file, extract it to the proper subfolder in the parent folder, add a new block we just did for the new zip file.
 
 
