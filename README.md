@@ -2,6 +2,8 @@
 This is a plug and run script. Meaning that you just need to update a few file paths, then run it right away. No coding knowledge or extra setup required. Though coding
 logic explanations are included in the parsing code.
 
+PLEASEE CREATE PARENT FOLDERS USING 990 DOWNLOADABLE ZIP FILES FROM HERE: https://www.irs.gov/charities-non-profits/form-990-series-downloads
+
 A few things in order to adjust this code to your system.
 
 1: Edit the Script’s File Paths to adhere to your own computer/device
