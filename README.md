@@ -23,43 +23,28 @@ You will need to change both lines so they match:
 Please don’t type the paths yourself. Just use the built-in “Copy as path” tool:
     1. Open File Explorer and go to the parent folder where your IRS XML subfolders are stored (in your C: drive)
             NOTE: You can ALSO just "copy path" from the VSCode explorer on the left hand side
-   
     2. Right-click that folder (e.g., EIN zip files 2017)
-   
     3. Click “Copy as path”
-   
     4. Paste that into the script after parent_folder =
 
 Repeat these steps for where you want the CSV to go:
     1. LEFT-click your csv output folder (e.g., csv output)
-   
     2. Choose the csv file that's associated with your XMLs that you're about to parse
-   
     3. Click “Copy as path”
-   
     4. Paste it into the script after output_csv =
-  
     5. Be sure to add a filename at the end (e.g., IRS 990H 2019.csv)
-
 
 A Few Key Notes:
     Keep the r before the path: This tells Python to read the backslashes correctly (a "raw string").
-
     Keep quotes around the path ("like this")
-
     You can use either \\ or \ inside the path. Python understands both when using r"".
-
-
 
 2: How to Add a New IRS Filing Year
     If you want to extract Schedule H data for a future year like 2026, you’ll need to add a few new lines to a specific part of the script.
     Don’t worry, it’s just copying and pasting with some edits.
-
-
     Scroll down in the script until you find a big section called release_info_for_subfolder =
     You’ll see blocks labeled by year — like #2017, #2018, #2019, and so on up until 2025
     This is where the script matches each folder of XML files to metadata about that ZIP release
-
 
 If you download a 2026 ZIP file from the IRS, you’ll need to add a block that looks like this to the script under the 2025 block. Label it:
 
@@ -71,13 +56,11 @@ If you download a 2026 ZIP file from the IRS, you’ll need to add a block that 
     "ReleaseDownload": "20xx-01-01"                                                                 <-- use the actual date you downloaded the zip file
     "ReleaseFileName": "2026_TEOS_XML_01A.zip"
 },
-
     Adjust the csv output path to adhere to the new year, and don't forget to add a new csv file in the csv output folder. In order to do so, click on the csv output
     dropdown in the VSCode Explorer. You will see multiple green files that represents the csv files. To add a new one, just right click "csv output" and click "New File".
     Name this new file "IRS 990H 2026.csv"
-
     Remember: This one block adheres to ONLY one zip file. i.e. "2026_TEOS_XML_01A". Multiple zip files will be available for download each year, so please adjust
-    ccordingly for each zip file.
+    accordingly for each zip file.
 
 Lastly two more things.
 
@@ -89,12 +72,10 @@ Secondly, the subfolders are currently empty. If you already have a specific zip
 two things.
     One, locate the folder where the XML files are in, CTRL + A --> Copy --> Go to the proper subfolder in the parent folder and then paste. All files will
     transfer into the new subfolder.
-    
     Or two (I recommend this method more) move the whole entire folder that the files are in, and relocate them into the parent folder and rename
     it so it adheres to the script's mapping logic.
 
-Remember that its much faster if you parse the files locally rather than through OneDrive,  so completely moving it is recommended since the first method copied the XMLs
-which just takes up more storage.
+Remember that its much faster if you parse the files locally rather than through OneDrive,  so completely moving it is recommended since the first method copied the XMLs which just takes up more storage.
 
 
 If you have any questions, please reach out to my personal email. Good luck!
