@@ -65,10 +65,12 @@ If you download a 2026 ZIP file from the IRS, you’ll need to add a block that 
         "ReleaseFileName": "2026_TEOS_XML_01A.zip"
     },
 
-    Adjust the csv output path to adhere to the new year, and don't forget to add a new csv file in the csv output folder. In order to do so, click on the csv output     dropdown in the VSCode Explorer. You will see multiple green files that represents the csv files. To add a new one, just right click "csv output" and click:
-    "New File".
+    Adjust the csv output path to adhere to the new year, and don't forget to add a new csv file in the csv output folder.
+    In order to do so, click on the csv output dropdown in the VSCode Explorer.
     
-    Then name this new file "IRS 990H 2026.csv"
+    You will see multiple green files that represents the csv files. To add a new one, just right click "csv output" and click:
+    
+    "New File". Then name this new file "IRS 990H 2026.csv"
        
     Remember: This one block adheres to ONLY one zip file. i.e. "2026_TEOS_XML_01A". Multiple zip files will be available for download each year, so please adjust
     accordingly for each zip file.
