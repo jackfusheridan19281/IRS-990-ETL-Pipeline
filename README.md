@@ -1,99 +1,119 @@
+# IRS Form 990 Schedule H ETL Pipeline
 
-This is a plug and run script. Meaning that you just need to update a few file paths, then run it right away. No coding knowledge or extra setup required. Though coding logic explanations are included in the parsing code.
+A Python ETL pipeline for extracting structured financial, community benefit, and hospital policy data from IRS Form 990 Schedule H XML filings and consolidating the results into CSV files for downstream analysis.
 
-PLEASE CREATE PARENT FOLDERS USING 990 DOWNLOADABLE ZIP FILES FROM HERE: https://www.irs.gov/charities-non-profits/form-990-series-downloads
+The pipeline processes batches of locally downloaded IRS XML filings, extracts Schedule H fields along with selected core Form 990 financial and filer information, attaches metadata for each IRS data release, standardizes the output schema, and combines the results into a single structured dataset.
 
-A few things in order to adjust this code to your system.
+IRS Form 990 XML releases can be downloaded from the [IRS Form 990 Series Downloads](https://www.irs.gov/charities-non-profits/form-990-series-downloads).
 
-1: Edit the Script’s File Paths to adhere to your own computer/device
+## Requirements
 
-You need to tell the script two things:
-    
-    Where your IRS XML folders are located (the parent folder)
-    Where to save your final spreadsheet file (the CSV output file)
+Install the required Python packages:
 
-Find the following two lines near the top of the script:
-    
-    parent_folder = r"C:\IRS990H_Parser\EIN zip files 20xx"
-    output_csv = r"C:\IRS990H_Parser\csv output\IRS 990H 20xx.csv"
+```bash
+pip install -r requirements.txt
+```
 
-You will need to change both lines so they match:
-    
-    The folder where your IRS XML files are stored
-    The folder (and filename) where your final CSV should be saved
+The project uses:
 
-Please don’t type the paths yourself. Just use the built-in “Copy as path” tool:
+- pandas
+- beautifulsoup4
+- tqdm
 
-    1. Open File Explorer and go to the parent folder where your IRS XML subfolders are stored (in your C: drive)
-            NOTE: You can ALSO just "copy path" from the VSCode explorer on the left hand side
-    2. Right-click that folder (e.g., EIN zip files 2017)
-    3. Click “Copy as path”
-    4. Paste that into the script after parent_folder =
+## Usage
 
-Repeat these steps for where you want the CSV to go:
- 
-    1. LEFT-click your csv output folder (e.g., csv output)
-    2. Choose the csv file that's associated with your XMLs that you're about to parse
-    3. Click “Copy as path”
-    4. Paste it into the script after output_csv =
-    5. Be sure to add a filename at the end (e.g., IRS 990H 2019.csv)
+### 1. Download and Extract IRS XML Releases
 
-A Few Key Notes:
-    
-    Keep the r before the path: This tells Python to read the backslashes correctly (a "raw string").
-    Keep quotes around the path ("like this")
-    You can use either \\ or \ inside the path. Python understands both when using r"".
+Download the desired Form 990 XML ZIP files from the IRS website and extract each release into its own subfolder.
 
-2: How to Add a New IRS Filing Year
-    
-    If you want to extract Schedule H data for a future year like 2026, you’ll need to add a few new lines to a specific part of the script.
-    
-    Don’t worry, it’s just copying and pasting with some edits.
-    
-    Scroll down in the script until you find a big section called release_info_for_subfolder =
-    
-    You’ll see blocks labeled by year — like #2017, #2018, #2019, and so on up until 2025
-    
-    This is where the script matches each folder of XML files to metadata about that ZIP release
+The structure should look similar to:
 
-If you download a 2026 ZIP file from the IRS, you’ll need to add a block that looks like this to the script under the 2025 block. Label it:
+```text
+EIN zip files 2025/
+├── 2025_TEOS_XML_01A/
+├── 2025_TEOS_XML_02A/
+├── 2025_TEOS_XML_03A/
+└── ...
+```
 
-    #2026
-    
-    "2026_TEOS_XML_01A": {
-        "ReleaseYear": "2026",
-        "ReleaseSource": "https://apps.irs.gov/pub/epostcard/990/xml/2026/2026_TEOS_XML_01A.zip",
-        "ReleaseDownload": "20xx-01-01"             <-- use the actual date you downloaded the zip file
-        "ReleaseFileName": "2026_TEOS_XML_01A.zip"
-    },
+Each release folder should contain the corresponding `.xml` filings.
 
-    Adjust the csv output path to adhere to the new year, and don't forget to add a new csv file in the csv output folder.
-    In order to do so, click on the csv output dropdown in the VSCode Explorer.
-    
-    You will see multiple green files that represents the csv files. To add a new one, just right click "csv output" and click:
-    
-    "New File". Then name this new file "IRS 990H 2026.csv"
-       
-    Remember: This one block adheres to ONLY one zip file. i.e. "2026_TEOS_XML_01A". Multiple zip files will be available for download each year, so please adjust
-    accordingly for each zip file.
+### 2. Configure the File Paths
 
-Lastly two more things.
+Near the top of the script, update:
 
-First, as of right now it is currently May 10th, 2025. Meaning that there will be more 2025 downloads available eventually. Please be mindful of these new
-zip files. The logic still applies, download the zip file, extract it to the proper subfolder in the parent folder, add a new block we just did for the new zip file.
+```python
+parent_folder = r"C:\IRS990H_Parser\EIN zip files 2025"
+output_csv = r"C:\IRS990H_Parser\csv output\IRS 990H 2025.csv"
+```
 
-Secondly, the subfolders are currently empty. If you already have a specific zip file downloaded or have the files already extracted in another folder, I recommend
-two things:
-    
-    One, locate the folder where the XML files are in, CTRL + A --> Copy --> Go to the proper subfolder in the parent folder and then paste. All files will
-    transfer into the new subfolder.
-    
-    Or two (I recommend this method more) move the whole entire folder that the files are in, and relocate them into the parent folder and rename
-    it so it adheres to the script's mapping logic.
+`parent_folder` should point to the folder containing the extracted IRS release folders.
 
-Remember that its much faster if you parse the files locally rather than through OneDrive,  so completely moving it is recommended since the first method copied the XMLs which just takes up more storage.
+`output_csv` should specify the location and filename of the final CSV.
+
+On Windows, you can use **Copy as path** in File Explorer and paste the path into the script. Keep the `r` before the path so Python treats it as a raw string.
+
+### 3. Run the Script
+
+Run the Python script after configuring the paths.
+
+The pipeline will:
+
+1. Identify each IRS release subfolder.
+2. Match the folder to its release metadata.
+3. Process each XML filing in the folder.
+4. Parse eligible Form 990 Schedule H filings.
+5. Extract and standardize the selected fields.
+6. Combine all records into a pandas DataFrame.
+7. Export the completed dataset to CSV.
+
+## Data Extracted
+
+The pipeline extracts structured fields covering areas including:
+
+- IRS release and filing metadata
+- Filer information
+- Core Form 990 financial data
+- Financial assistance policies
+- Community benefit expenditures
+- Community building activities
+- Bad debt and Medicare information
+- Management companies and joint ventures
+- Hospital facility information
+- Community Health Needs Assessments
+- Billing and collection policies
+- Non-hospital healthcare facilities
+
+Output variables are standardized into abbreviated `IRS_` column names before export.
+
+## Adding a New IRS Release
+
+The script uses the `release_info_for_subfolder` dictionary to associate each local release folder with information about the original IRS ZIP file.
+
+For a new release, add an entry following the existing structure:
+
+```python
+"2026_TEOS_XML_01A": {
+    "ReleaseYear": "2026",
+    "ReleaseSource": "https://apps.irs.gov/pub/epostcard/990/xml/2026/2026_TEOS_XML_01A.zip",
+    "ReleaseDownload": "2026-01-01",
+    "ReleaseFileName": "2026_TEOS_XML_01A.zip"
+},
+```
+
+Replace `ReleaseDownload` with the actual date the ZIP file was downloaded.
+
+Each entry corresponds to one IRS ZIP release. If multiple releases are published during the year, add a separate entry for each release and extract each ZIP into its corresponding subfolder.
+
+## Notes
+
+IRS Form 990 XML releases are published throughout the year, so additional release folders and metadata entries may need to be added over time.
+
+For better performance when processing large numbers of XML files, local storage is recommended over cloud-synced directories such as OneDrive.
+
+The pipeline depends on the structure of IRS Form 990 XML filings. Changes to IRS XML schemas or release formats may require updates to the parsing logic.
+
 
 If you have any questions, please reach out to my personal email. Good luck!
 
-Jack Sheridan
-sheridanjack38@gmail.com
+Jack Sheridan sheridanjack38@gmail.com
