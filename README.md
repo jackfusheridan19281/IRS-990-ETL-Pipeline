@@ -74,7 +74,7 @@ First, as of right now it is currently May 10th, 2025. Meaning that there will b
 zip files. The logic still applies, download the zip file, extract it to the proper subfolder in the parent folder, add a new block we just did for the new zip file.
 
 Secondly, the subfolders are currently empty. If you already have a specific zip file downloaded or have the files already extracted in another folder, I recommend
-two things.
+two things:
     
     One, locate the folder where the XML files are in, CTRL + A --> Copy --> Go to the proper subfolder in the parent folder and then paste. All files will
     transfer into the new subfolder.
