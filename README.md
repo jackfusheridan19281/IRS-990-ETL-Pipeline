@@ -46,7 +46,9 @@ A Few Key Notes:
 
 2: How to Add a New IRS Filing Year
     
-    If you want to extract Schedule H data for a future year like 2026, you’ll need to add a few new lines to a specific part of the script. Don’t worry, it’s just       copying and pasting with some edits.
+    If you want to extract Schedule H data for a future year like 2026, you’ll need to add a few new lines to a specific part of the script.
+    
+    Don’t worry, it’s just copying and pasting with some edits.
     
     Scroll down in the script until you find a big section called release_info_for_subfolder =
     
